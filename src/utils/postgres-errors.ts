@@ -1,6 +1,6 @@
 import type { DatabaseError } from 'pg';
 
-const EMAIL_UNIQUE_CONSTRAINTS = new Set(['users_email_unique', 'users_email_idx']);
+const EMAIL_UNIQUE_CONSTRAINTS = new Set(['users_email_lower_idx']);
 
 export type UniqueViolationError = DatabaseError & {
   code: '23505';

@@ -12,7 +12,9 @@ CREATE TABLE "product_variants" (
 	"attributes" text,
 	"is_active" boolean DEFAULT true NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
-	"updated_at" timestamp DEFAULT now() NOT NULL
+	"updated_at" timestamp DEFAULT now() NOT NULL,
+	CONSTRAINT "product_variants_price_non_negative" CHECK ("price" >= 0),
+	CONSTRAINT "product_variants_cost_price_non_negative" CHECK ("cost_price" >= 0 OR "cost_price" IS NULL)
 );
 --> statement-breakpoint
 CREATE TABLE "products" (
@@ -31,7 +33,8 @@ CREATE TABLE "stock_levels" (
 	"warehouse_id" uuid NOT NULL,
 	"quantity" integer DEFAULT 0 NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
-	"updated_at" timestamp DEFAULT now() NOT NULL
+	"updated_at" timestamp DEFAULT now() NOT NULL,
+	CONSTRAINT "stock_levels_quantity_nonnegative" CHECK ("quantity" >= 0)
 );
 --> statement-breakpoint
 CREATE TABLE "stock_movements" (
@@ -45,7 +48,10 @@ CREATE TABLE "stock_movements" (
 	"previous_quantity" integer NOT NULL,
 	"new_quantity" integer NOT NULL,
 	"note" text,
-	"created_at" timestamp DEFAULT now() NOT NULL
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	CONSTRAINT "stock_movements_quantity_nonnegative" CHECK ("quantity" >= 0),
+	CONSTRAINT "stock_movements_previous_quantity_nonnegative" CHECK ("previous_quantity" >= 0),
+	CONSTRAINT "stock_movements_new_quantity_nonnegative" CHECK ("new_quantity" >= 0)
 );
 --> statement-breakpoint
 CREATE TABLE "users" (
@@ -56,8 +62,7 @@ CREATE TABLE "users" (
 	"role" "user_role" DEFAULT 'STAFF' NOT NULL,
 	"is_active" boolean DEFAULT true NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
-	"updated_at" timestamp DEFAULT now() NOT NULL,
-	CONSTRAINT "users_email_unique" UNIQUE("email")
+	"updated_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE "warehouses" (
@@ -87,6 +92,6 @@ CREATE INDEX "stock_movements_variant_id_idx" ON "stock_movements" USING btree (
 CREATE INDEX "stock_movements_warehouse_id_idx" ON "stock_movements" USING btree ("warehouse_id");--> statement-breakpoint
 CREATE INDEX "stock_movements_created_by_id_idx" ON "stock_movements" USING btree ("created_by_id");--> statement-breakpoint
 CREATE INDEX "stock_movements_created_at_idx" ON "stock_movements" USING btree ("created_at");--> statement-breakpoint
-CREATE UNIQUE INDEX "users_email_idx" ON "users" USING btree ("email");--> statement-breakpoint
+CREATE UNIQUE INDEX "users_email_lower_idx" ON "users" USING btree (lower("email"));--> statement-breakpoint
 CREATE INDEX "warehouses_name_idx" ON "warehouses" USING btree ("name");--> statement-breakpoint
 CREATE INDEX "warehouses_city_idx" ON "warehouses" USING btree ("city");
