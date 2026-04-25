@@ -7,13 +7,13 @@ import { z, ZodError } from 'zod';
 
 const nodeEnvSchema = z.enum(['development', 'production', 'test']).default('development');
 
-const currentNodeEnv = nodeEnvSchema.parse(process.env.NODE_ENV);
+const getNodeEnv = () => nodeEnvSchema.parse(process.env.NODE_ENV);
 
-export const isDev = () => currentNodeEnv === 'development';
+export const isDev = () => getNodeEnv() === 'development';
 
-export const isProd = () => currentNodeEnv === 'production';
+export const isProd = () => getNodeEnv() === 'production';
 
-export const isTesting = () => currentNodeEnv === 'test';
+export const isTesting = () => getNodeEnv() === 'test';
 
 const loadEnvFile = (fileName: string) => {
   const envPath = resolve(process.cwd(), fileName);
@@ -60,6 +60,12 @@ const parseEnv = (): Env => {
     if (error instanceof ZodError) {
       console.error('Invalid env vars');
       console.error(JSON.stringify(error.flatten().fieldErrors, null, 2));
+    } else {
+      console.error('Unexpected error parsing environment variables:');
+      console.error(error);
+      if (error instanceof Error && error.stack) {
+        console.error(error.stack);
+      }
     }
 
     process.exit(1);
