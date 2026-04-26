@@ -24,5 +24,5 @@ export const createUser = async (data: CreateUserParams): Promise<User> => {
 export const findUserByEmail = async (email: string): Promise<User | null> => {
   const [user] = await db.select().from(users).where(eq(users.email, email)).limit(1);
 
-  return user ?? null;
+  return user ?? n ull;
 };
