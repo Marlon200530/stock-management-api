@@ -4,7 +4,7 @@
 Base URL:
 
 ```txt
-/api
+/api/v1
 ````
 
 ---
@@ -31,12 +31,14 @@ POST /auth/register
 
 ```json
 {
-  "message": "User registered successfully",
-  "user": {
-    "id": "uuid",
-    "name": "Marlon Nhantumbo",
-    "email": "marlon@example.com",
-    "role": "STAFF"
+  "status": "ok",
+  "data": {
+    "user": {
+      "id": "uuid",
+      "name": "Marlon Nhantumbo",
+      "email": "marlon@example.com",
+      "role": "STAFF"
+    }
   }
 }
 ```
@@ -70,13 +72,15 @@ POST /auth/login
 
 ```json
 {
-  "message": "Login successful",
-  "accessToken": "jwt-token",
-  "user": {
-    "id": "uuid",
-    "name": "Marlon Nhantumbo",
-    "email": "marlon@example.com",
-    "role": "STAFF"
+  "status": "ok",
+  "data": {
+    "user": {
+      "id": "uuid",
+      "name": "Marlon Nhantumbo",
+      "email": "marlon@example.com",
+      "role": "STAFF"
+    },
+    "accessToken": "jwt-token"
   }
 }
 ```
@@ -111,12 +115,15 @@ Não tem body.
 
 ```json
 {
-  "user": {
-    "id": "uuid",
-    "name": "Marlon Nhantumbo",
-    "email": "marlon@example.com",
-    "role": "STAFF",
-    "isActive": true
+  "status": "ok",
+  "data": {
+    "user": {
+      "id": "uuid",
+      "name": "Marlon Nhantumbo",
+      "email": "marlon@example.com",
+      "role": "STAFF",
+      "isActive": true
+    }
   }
 }
 ```
