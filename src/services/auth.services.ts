@@ -1,6 +1,6 @@
-import type { LoginUserInput, RegisterUserInput } from '../db/schema.ts';
+import type { LoginUserInput, RegisterUserInput, UserInfo } from '../db/schema.ts';
 import { AppError } from '../errors/app-error.ts';
-import { createUser, findUserByEmail } from '../repositories/auth.repository.ts';
+import { createUser, findUserByEmail, findUserById } from '../repositories/auth.repository.ts';
 import { hashPassword, verifyPassword } from '../utils/password.ts';
 import { isEmailUniqueViolation } from '../utils/postgres-errors.ts';
 import { generateAccessToken } from '../utils/token.ts';
@@ -17,6 +17,13 @@ export class InvalidCredentialsError extends AppError {
   constructor() {
     super('Invalid credentials', 401);
     this.name = 'InvalidCredentialsError';
+  }
+}
+
+export class InvalidUserError extends AppError {
+  constructor() {
+    super('Invalid User', 404);
+    this.name = "InvalidUserError";
   }
 }
 
@@ -70,3 +77,17 @@ export const loginUserService = async (data: LoginUserInput): Promise<LoginResul
     accessToken: generateAccessToken(safeUser),
   };
 };
+
+
+export const getCurrentUserService = async (userID : string) : Promise<SafeUser> => {
+  const user = await findUserById(userID);
+
+  if (!user) {
+    throw new InvalidUserError();
+  }
+
+  const {password: _password, ...safeUser} = user;
+
+
+  return safeUser;
+}
