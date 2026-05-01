@@ -4,14 +4,14 @@ import { env } from '../../env.ts';
 import type { SafeUser } from './user.ts';
 
 type AccessTokenPayload = {
-  sub: string;
+  userID: string;
   email: string;
   role: SafeUser['role'];
 };
 
 export const generateAccessToken = (user: SafeUser): string => {
   const payload: AccessTokenPayload = {
-    sub: user.id,
+    userID: user.id,
     email: user.email,
     role: user.role,
   };
@@ -22,3 +22,11 @@ export const generateAccessToken = (user: SafeUser): string => {
 
   return jwt.sign(payload, env.JWT_SECRET, options);
 };
+
+export const verifyToken = (token : string) => {
+  const secret = env.JWT_SECRET;
+  const payload : AccessTokenPayload = jwt.verify(token, secret) as AccessTokenPayload;
+  
+  return payload
+}
+

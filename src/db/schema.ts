@@ -364,6 +364,7 @@ export const loginUserSchema = registerUserSchema.pick({
 
 export type User = typeof users.$inferSelect;
 export type NewUser = typeof users.$inferInsert;
+export type UserInfo = Omit<User, 'password'>
 
 export type RegisterUserInput = z.infer<typeof registerUserSchema>;
 export type LoginUserInput = z.infer<typeof loginUserSchema>
