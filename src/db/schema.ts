@@ -358,6 +358,13 @@ export const loginUserSchema = registerUserSchema.pick({
     password: true
 });
 
+export const createProductSchema = createInsertSchema(products).pick({
+    name: true,
+    description: true,
+    category: true,
+    status: true
+})
+
 /**
  * TYPES
  */

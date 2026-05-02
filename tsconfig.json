@@ -9,7 +9,7 @@
     "skipLibCheck": true,
     "noEmit": true,
     "rootDir": ".",
-    "types": ["node"]
+    "types": ["node", "express"]
   },
   "include": ["src", "env.ts", "drizzle.config.ts", "src/types/**/*.d.ts"],
   "exclude": ["node_modules", "dist"]
