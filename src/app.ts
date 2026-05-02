@@ -7,6 +7,7 @@ import cors from 'cors';
 import { env } from '../env.ts';
 import { errorHandler } from './middlewares/error-handler.ts';
 import { authRouter } from './routes/auth.routes.ts';
+import { productRoutes } from './routes/product.routes.ts';
 
 const app = express();
 
@@ -18,7 +19,6 @@ app.use(
 );
 app.use(express.json());
 app.use(morgan('dev'));
-app.use(`${env.API_PREFIX}/auth`, authRouter);
 
 app.get(`${env.API_PREFIX}/health`, (_req: Request, res: Response) => {
   res.status(200).json({
@@ -27,6 +27,9 @@ app.get(`${env.API_PREFIX}/health`, (_req: Request, res: Response) => {
     timestamp: Date.now().toString(),
   });
 });
+
+app.use(`${env.API_PREFIX}/auth`, authRouter);
+app.use(`${env.API_PREFIX}/products`, productRoutes);
 
 app.use(errorHandler);
 

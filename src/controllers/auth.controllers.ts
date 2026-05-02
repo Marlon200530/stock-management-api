@@ -1,5 +1,6 @@
 import type { Request, Response } from "express";
 
+/// <reference path="../types/express.d.ts" />
 import type { LoginUserInput, RegisterUserInput } from "../db/schema.ts";
 import {
   createUserService,

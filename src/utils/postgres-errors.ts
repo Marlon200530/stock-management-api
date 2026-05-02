@@ -16,7 +16,7 @@ const isErrorWithCause = (error: unknown): error is ErrorWithCause => {
   return typeof error === 'object' && error !== null && 'cause' in error;
 };
 
-const extractDatabaseError = (error: unknown): DatabaseError | null => {
+export const extractDatabaseError = (error: unknown): DatabaseError | null => {
   if (typeof error !== 'object' || error === null) {
     return null;
   }
@@ -35,6 +35,25 @@ const extractDatabaseError = (error: unknown): DatabaseError | null => {
 export const isUniqueViolation = (error: unknown): error is UniqueViolationError => {
   const databaseError = extractDatabaseError(error);
   return databaseError?.code === '23505';
+};
+
+export const isNotNullViolation = (error: unknown): error is DatabaseError & { code: '23502' } => {
+  const databaseError = extractDatabaseError(error);
+  return databaseError?.code === '23502';
+};
+
+export const isStringDataRightTruncation = (
+  error: unknown,
+): error is DatabaseError & { code: '22001' } => {
+  const databaseError = extractDatabaseError(error);
+  return databaseError?.code === '22001';
+};
+
+export const isInvalidTextRepresentation = (
+  error: unknown,
+): error is DatabaseError & { code: '22P02' } => {
+  const databaseError = extractDatabaseError(error);
+  return databaseError?.code === '22P02';
 };
 
 export const isEmailUniqueViolation = (error: unknown): error is UniqueViolationError => {

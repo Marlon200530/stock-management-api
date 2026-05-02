@@ -1,6 +1,6 @@
 import type { LoginUserInput, RegisterUserInput, UserInfo } from '../db/schema.ts';
 import { AppError } from '../errors/app-error.ts';
-import { createUser, findUserByEmail, findUserById } from '../repositories/auth.repository.ts';
+import { createUser, findUserByEmail, findUserById } from '../repositories/auth.repositories.ts';
 import { hashPassword, verifyPassword } from '../utils/password.ts';
 import { isEmailUniqueViolation } from '../utils/postgres-errors.ts';
 import { generateAccessToken } from '../utils/token.ts';
